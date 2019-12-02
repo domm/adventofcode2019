@@ -1,4 +1,4 @@
-use 5.010;
+use 5.030;
 use strict;
 use warnings;
 use lib '.';
@@ -8,6 +8,6 @@ my @code = split( ',', <STDIN> );
 $code[1] = 12;
 $code[2] = 2;
 
-my $intcode = Intcode->new( @code);
+my $intcode = Intcode->new( [@code] );
 say $intcode->runit;
 
