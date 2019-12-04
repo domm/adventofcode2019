@@ -45,6 +45,7 @@ for my $path (@wires) {
     $wire++;
 }
 
+# Lattenzaun!!!! TODO fix? take care
 say $short;
 
 sub move {
