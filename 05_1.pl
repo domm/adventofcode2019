@@ -8,8 +8,6 @@ my@code;
 local $/ = undef;
 @code = split( ',', <$fh> );
 }
-#$code[1] = 12;
-#$code[2] = 2;
 
 my $intcode = Intcode->new( [@code] );
 $intcode->runit;

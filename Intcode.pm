@@ -20,7 +20,7 @@ sub new ($class, $code, $pos = 0) {
 
 sub runit ($self, $final = 0) {
     while (1) {
-        my $raw = $self->code->[ $self->pos ];
+        my $raw = $self->code->[ $self->read_pos ];
         chomp($raw);
         my @modes= split(//,$raw);
 
@@ -38,88 +38,70 @@ sub runit ($self, $final = 0) {
     return $self->code->[$final];
 }
 
-sub op_1 ($self) {
-    my ( $x, $y, $t ) = $self->get_n( 3 );
-    $self->code->[$self->get_target($t)] = $self->get_val($x) + $self->get_val($y);
+sub op_1 ($self) { # add
+    $self->set($self->get + $self->get);
 }
 
-sub op_2 ($self) {
-    my ( $x, $y, $t ) = $self->get_n( 3 );
-    $self->code->[$self->get_target($t)] = $self->get_val($x) * $self->get_val($y);
+sub op_2 ($self) { # multiply
+    $self->set($self->get * $self->get);
 }
 
 sub op_3 ($self) { # input
-    my ( $t ) = $self->get_n( 1 );
-    print "03 input: ";
+    print "op03 input: ";
     my $in = <STDIN>;
     chomp($in);
-    $self->code->[$self->get_target($t)] = $in;
-
+    $self->set($in);
 }
 
 sub op_4 ($self) { # output
-    my ( $out) = $self->get_n( 1 );
-    say "04 output ". $self->get_val($out);
+    say "op04 output: ". $self->get;
 }
 
 sub op_5 ($self) { # jump-if-true
     my $pos = $self->pos;
-    my ( $pcheck, $ppos ) = $self->get_n( 2 );
-    my $check = $self->get_val($pcheck);
+    my $check = $self->get;
+    my $target = $self->get;
     if ($check != 0) {
-        $self->pos($self->get_val($ppos));
+        $self->pos($target);
     }
 }
+
 sub op_6 ($self) { # jump-if-false
     my $pos = $self->pos;
-    my ( $pcheck, $ppos ) = $self->get_n( 2 );
-    my $check = $self->get_val($pcheck);
+    my $check = $self->get;
+    my $target = $self->get;
     if ($check == 0) {
-        $self->pos($self->get_val($ppos));
+        $self->pos($target);
     }
 }
 
 sub op_7 ($self) { # less then
-    my ( $x, $y, $t ) = $self->get_n( 3 );
-    my $res = $self->get_val($x) < $self->get_val($y) ? 1 : 0;
-    $self->code->[$self->get_target($t)] = $res;
+    $self->set($self->get < $self->get ? 1 : 0);
 }
 
 sub op_8 ($self) { # equals
-    my ( $x, $y, $t ) = $self->get_n( 3 );
-    my $res = $self->get_val($x) == $self->get_val($y) ? 1 : 0;
-    $self->code->[$self->get_target($t)] = $res;
+    $self->set($self->get == $self->get ? 1 : 0);
 }
 
 sub op_99 {
     return undef;
 }
 
-sub get_n ($self, $n){
-    my $pos = $self->pos;
-    my $modes = $self->modes;
-    my @pointer;
-    for my $i (1 .. $n) {
-        my $mode = $modes->[$i -1] || 0;
-        my $val = $self->code->[$pos + $i];
-        if ($mode == 0) {
-            push(@pointer,\$val);
-        }
-        elsif ($mode ==1 ) {
-            push(@pointer,$val);
-        }
-    }
-    $self->pos( $pos + $n + 1 );
-    $self->modes([]);
-    return @pointer;
+sub get ($self) {
+    my $mode = shift(@{$self->modes}) || 0;
+    my $pointer = $self->code->[$self->read_pos];
+    my $val = $mode ? $pointer : $self->code->[ $pointer];
+    return $val;
 }
 
-sub get_val ($self, $p) {
-    return ref($p) ? $self->code->[$$p] : $p;
+sub set ($self, $val) {
+    $self->code->[ $self->code->[$self->read_pos] ] = $val;
 }
 
-sub get_target ($self, $p) {
-    return ref($p) ? $$p : $p;
+sub read_pos ($self) {
+    my $pos = $self->pos ;
+    $self->pos($pos + 1);
+    return $pos;
 }
 
 1;
