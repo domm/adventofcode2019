@@ -27,7 +27,7 @@ sub runit ($self, $final = 0) {
         my $op = join('',reverse (grep {$_} (pop(@modes),pop(@modes))));
         @modes = reverse(@modes);
         $op=~s/^0//;
-        say "op $op";
+        #say "op $op";
         chomp($op);
         my $method = 'op_' . $op;
 
@@ -60,6 +60,35 @@ sub op_3 ($self) { # input
 sub op_4 ($self) { # output
     my ( $out) = $self->get_n( 1 );
     say "04 output ". $self->get_val($out);
+}
+
+sub op_5 ($self) { # jump-if-true
+    my $pos = $self->pos;
+    my ( $pcheck, $ppos ) = $self->get_n( 2 );
+    my $check = $self->get_val($pcheck);
+    if ($check != 0) {
+        $self->pos($self->get_val($ppos));
+    }
+}
+sub op_6 ($self) { # jump-if-false
+    my $pos = $self->pos;
+    my ( $pcheck, $ppos ) = $self->get_n( 2 );
+    my $check = $self->get_val($pcheck);
+    if ($check == 0) {
+        $self->pos($self->get_val($ppos));
+    }
+}
+
+sub op_7 ($self) { # less then
+    my ( $x, $y, $t ) = $self->get_n( 3 );
+    my $res = $self->get_val($x) < $self->get_val($y) ? 1 : 0;
+    $self->code->[$self->get_target($t)] = $res;
+}
+
+sub op_8 ($self) { # equals
+    my ( $x, $y, $t ) = $self->get_n( 3 );
+    my $res = $self->get_val($x) == $self->get_val($y) ? 1 : 0;
+    $self->code->[$self->get_target($t)] = $res;
 }
 
 sub op_99 {

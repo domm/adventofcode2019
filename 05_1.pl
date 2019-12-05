@@ -12,5 +12,5 @@ local $/ = undef;
 #$code[2] = 2;
 
 my $intcode = Intcode->new( [@code] );
-say $intcode->runit;
+$intcode->runit;
 
