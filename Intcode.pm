@@ -8,13 +8,14 @@ no warnings 'experimental::signatures';
 
 use base qw(Class::Accessor::Fast);
 
-__PACKAGE__->mk_accessors(qw(pos code modes));
+__PACKAGE__->mk_accessors(qw(pos code modes output input));
 
 sub new ($class, $code, $pos = 0) {
     return bless {
         code => $code,
         pos  => $pos,
         modes => [],
+        input => [],
     }, $class;
 }
 
@@ -47,14 +48,17 @@ sub op_2 ($self) { # multiply
 }
 
 sub op_3 ($self) { # input
-    print "op03 input: ";
-    my $in = <STDIN>;
-    chomp($in);
+    my $in = shift($self->input->@*);
+    unless (defined $in ) {
+        print "op03 input: $in";
+        $in = <STDIN>;
+        chomp($in);
+    }
     $self->set($in);
 }
 
 sub op_4 ($self) { # output
-    say "op04 output: ". $self->get;
+    $self->output($self->get);
 }
 
 sub op_5 ($self) { # jump-if-true
