@@ -94,8 +94,7 @@ sub op_99 {
 sub get ($self) {
     my $mode = shift(@{$self->modes}) || 0;
     my $pointer = $self->code->[$self->read_pos];
-    my $val = $mode ? $pointer : $self->code->[ $pointer];
-    return $val;
+    return $mode ? $pointer : $self->code->[ $pointer];
 }
 
 sub set ($self, $val) {
