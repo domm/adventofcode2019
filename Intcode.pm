@@ -8,7 +8,7 @@ no warnings 'experimental::signatures';
 
 use base qw(Class::Accessor::Fast);
 
-__PACKAGE__->mk_accessors(qw(pos code modes output input));
+__PACKAGE__->mk_accessors(qw(pos code modes output input halted));
 
 sub new ($class, $code, $pos = 0) {
     return bless {
@@ -16,6 +16,7 @@ sub new ($class, $code, $pos = 0) {
         pos  => $pos,
         modes => [],
         input => [],
+        halted=>0,
     }, $class;
 }
 
@@ -28,13 +29,12 @@ sub runit ($self, $final = 0) {
         my $op = join('',reverse (grep {$_} (pop(@modes),pop(@modes))));
         @modes = reverse(@modes);
         $op=~s/^0//;
-        #say "op $op";
+        #say $self->{pos}." op $op";
         chomp($op);
         my $method = 'op_' . $op;
 
         $self->modes(\@modes);
         last unless defined $self->$method;
-
     }
     return $self->code->[$final];
 }
@@ -49,16 +49,17 @@ sub op_2 ($self) { # multiply
 
 sub op_3 ($self) { # input
     my $in = shift($self->input->@*);
-    unless (defined $in ) {
-        print "op03 input: $in";
-        $in = <STDIN>;
-        chomp($in);
+    #say "got input ".( $in || 'nothing yet');
+    unless (defined $in) {
+        $self->{pos} = $self->{pos}-1;
+        return undef;
     }
     $self->set($in);
 }
 
 sub op_4 ($self) { # output
     $self->output($self->get);
+    return undef;
 }
 
 sub op_5 ($self) { # jump-if-true
@@ -87,7 +88,8 @@ sub op_8 ($self) { # equals
     $self->set($self->get == $self->get ? 1 : 0);
 }
 
-sub op_99 {
+sub op_99 ($self) {
+    $self->halted(1);
     return undef;
 }
 
