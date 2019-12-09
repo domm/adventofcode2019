@@ -41,11 +41,11 @@ sub runit ($self, $final = 0) {
 }
 
 sub op_1 ($self) { # add
-    $self->set($self->get + $self->get);
+    $self->val($self->val + $self->val);
 }
 
 sub op_2 ($self) { # multiply
-    $self->set($self->get * $self->get);
+    $self->val($self->val * $self->val);
 }
 
 sub op_3 ($self) { # input
@@ -55,18 +55,18 @@ sub op_3 ($self) { # input
         $self->{pos} = $self->{pos}-1;
         return undef;
     }
-    $self->set($in);
+    $self->val($in);
 }
 
 sub op_4 ($self) { # output
-    $self->output($self->get);
+    $self->output($self->val);
     return undef;
 }
 
 sub op_5 ($self) { # jump-if-true
     my $pos = $self->pos;
-    my $check = $self->get;
-    my $target = $self->get;
+    my $check = $self->val;
+    my $target = $self->val;
     if ($check != 0) {
         $self->pos($target);
     }
@@ -74,23 +74,23 @@ sub op_5 ($self) { # jump-if-true
 
 sub op_6 ($self) { # jump-if-false
     my $pos = $self->pos;
-    my $check = $self->get;
-    my $target = $self->get;
+    my $check = $self->val;
+    my $target = $self->val;
     if ($check == 0) {
         $self->pos($target);
     }
 }
 
 sub op_7 ($self) { # less then
-    $self->set($self->get < $self->get ? 1 : 0);
+    $self->val($self->val < $self->val ? 1 : 0);
 }
 
 sub op_8 ($self) { # equals
-    $self->set($self->get == $self->get ? 1 : 0);
+    $self->val($self->val == $self->val ? 1 : 0);
 }
 
 sub op_9 ($self) { # relbase
-    my $base = $self->get;
+    my $base = $self->val;
     #warn "new relbase $base";
     $self->relbase($self->relbase + $base);
 }
