@@ -10,6 +10,8 @@ use base qw(Class::Accessor::Fast);
 
 __PACKAGE__->mk_accessors(qw(pos code modes output input halted relbase));
 
+use constant DEBUG => 0;
+
 sub new ($class, $code, $pos = 0) {
     return bless {
         code => $code,
@@ -30,7 +32,7 @@ sub runit ($self, $final = 0) {
         my $op = join('',reverse (grep {$_} (pop(@modes),pop(@modes))));
         @modes = reverse(@modes);
         $op=~s/^0//;
-        #say $self->{pos}." op $op";
+        say $self->{pos}." op $op" if DEBUG;
         chomp($op);
         my $method = 'op_' . $op;
 
@@ -50,7 +52,7 @@ sub op_2 ($self) { # multiply
 
 sub op_3 ($self) { # input
     my $in = shift($self->input->@*);
-    #say "got input ".( $in || 'nothing yet');
+    say "got input ".( $in || 'nothing yet') if DEBUG;
     unless (defined $in) {
         $self->{pos} = $self->{pos}-1;
         return undef;
@@ -97,7 +99,6 @@ sub op_9 ($self) { # relbase
 
 sub op_99 ($self) {
     $self->halted(1);
-    say "HALT";
     return undef;
 }
 
