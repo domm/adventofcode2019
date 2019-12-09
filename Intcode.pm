@@ -8,7 +8,7 @@ no warnings 'experimental::signatures';
 
 use base qw(Class::Accessor::Fast);
 
-__PACKAGE__->mk_accessors(qw(pos code modes output input halted));
+__PACKAGE__->mk_accessors(qw(pos code modes output input halted relbase));
 
 sub new ($class, $code, $pos = 0) {
     return bless {
@@ -17,6 +17,7 @@ sub new ($class, $code, $pos = 0) {
         modes => [],
         input => [],
         halted=>0,
+        relbase=>0,
     }, $class;
 }
 
@@ -88,19 +89,47 @@ sub op_8 ($self) { # equals
     $self->set($self->get == $self->get ? 1 : 0);
 }
 
+sub op_9 ($self) { # relbase
+    my $base = $self->get;
+    #warn "new relbase $base";
+    $self->relbase($self->relbase + $base);
+}
+
 sub op_99 ($self) {
     $self->halted(1);
+    say "HALT";
     return undef;
 }
 
 sub get ($self) {
     my $mode = shift(@{$self->modes}) || 0;
     my $pointer = $self->code->[$self->read_pos];
-    return $mode ? $pointer : $self->code->[ $pointer];
+    #say "GET $mode $pointer";
+    if ($mode == 0) {
+        return $self->code->[ $pointer];
+    }
+    elsif ($mode == 1) {
+        return $pointer;
+    }
+    elsif ($mode ==2) {
+        return $self->code->[$self->relbase + $pointer];
+    }
+    die "invalid mode $mode";
 }
 
 sub set ($self, $val) {
-    $self->code->[ $self->code->[$self->read_pos] ] = $val;
+    my $mode = shift(@{$self->modes}) || 0;
+    my $pointer = $self->code->[$self->read_pos];
+    if ($mode == 0) {
+        return $self->code->[ $pointer] = $val;
+    }
+    elsif ($mode == 1) {
+        die "mode 1 not to be used on set!"
+    }
+    elsif ($mode ==2) {
+        return $self->code->[$self->relbase + $pointer] = $val;
+    }
+    die "invalid mode $mode";
 }
 
 sub read_pos ($self) {
