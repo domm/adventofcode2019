@@ -35,11 +35,13 @@ sub runit ($self, $final = 0) {
     while (1) {
         my $raw = $self->code->[ $self->read_pos ];
         chomp($raw);
-        my @modes= split(//,$raw);
+        my $op = $raw % 100; # from https://github.com/daftmaple/aoc/blob/44d84e33656f150ea8ca60fa76105229fdec6480/2019/q09/q09.pl
+        my @modes = (
+            int($raw / 100) % 10,
+            int($raw / 1000) % 10,
+            int($raw / 10000) % 10
+        );
 
-        my $op = join('',reverse (grep {$_} (pop(@modes),pop(@modes))));
-        @modes = reverse(@modes);
-        $op=~s/^0//;
         say $self->{pos}." op $op" if DEBUG;
         chomp($op);
         my $method = 'op_' . $op;
