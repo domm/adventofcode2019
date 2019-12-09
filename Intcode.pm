@@ -23,6 +23,14 @@ sub new ($class, $code, $pos = 0) {
     }, $class;
 }
 
+sub from_file ($class, $file) {
+    my @code;
+    open (my $fh, '<', $file) or die;
+    local $/ = undef;
+    @code = split( ',', <$fh> );
+    return $class->new(\@code);
+}
+
 sub runit ($self, $final = 0) {
     while (1) {
         my $raw = $self->code->[ $self->read_pos ];

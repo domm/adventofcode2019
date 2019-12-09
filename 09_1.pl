@@ -3,14 +3,8 @@ use strict;
 use warnings;
 use lib '.';
 use Intcode;
-my @code;
-{
-    open my $fh, '<', $ARGV[0] or die;
-    local $/ = undef;
-    @code = split( ',', <$fh> );
-}
 
-my $intcode = Intcode->new( [@code] );
+my $intcode = Intcode->from_file($ARGV[0]);
 $intcode->input( [ 2 ]);
 while (!$intcode->halted) {
     $intcode->runit;
