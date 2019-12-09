@@ -11,10 +11,9 @@ my @code;
 }
 
 my $intcode = Intcode->new( [@code] );
-$intcode->input( [2 ]);
+$intcode->input( [ 2 ]);
 while (!$intcode->halted) {
     $intcode->runit;
-    my $output = $intcode->output;
-    say "o ".$output;
 }
+say $intcode->output;
 
