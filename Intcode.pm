@@ -101,33 +101,22 @@ sub op_99 ($self) {
     return undef;
 }
 
-sub get ($self) {
+sub val {
+    my ($self, $val) = @_;
     my $mode = shift(@{$self->modes}) || 0;
     my $pointer = $self->code->[$self->read_pos];
-    #say "GET $mode $pointer";
+    say "GET $mode $pointer" if DEBUG;
     if ($mode == 0) {
+        $self->code->[$pointer] = $val if defined $val;
         return $self->code->[ $pointer];
     }
     elsif ($mode == 1) {
+        die "mode 1 not to be used on set!" if defined $val;
         return $pointer;
     }
-    elsif ($mode ==2) {
+    elsif ($mode == 2) {
+        $self->code->[$self->relbase + $pointer] = $val if defined $val;
         return $self->code->[$self->relbase + $pointer];
-    }
-    die "invalid mode $mode";
-}
-
-sub set ($self, $val) {
-    my $mode = shift(@{$self->modes}) || 0;
-    my $pointer = $self->code->[$self->read_pos];
-    if ($mode == 0) {
-        return $self->code->[ $pointer] = $val;
-    }
-    elsif ($mode == 1) {
-        die "mode 1 not to be used on set!"
-    }
-    elsif ($mode ==2) {
-        return $self->code->[$self->relbase + $pointer] = $val;
     }
     die "invalid mode $mode";
 }
