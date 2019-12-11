@@ -19,6 +19,7 @@ my @move=(
 $hull[$r]->[$c] = '0';
 my %first;
 my $cnt=0;
+
 while (!$intcode->halted) {
     my $old_col = $hull[$r]->[$c] || 0;
     say "step $cnt: pos $r $c, color is $old_col";
@@ -50,6 +51,4 @@ while (!$intcode->halted) {
 }
 
 say scalar keys %first;
-
-
 
