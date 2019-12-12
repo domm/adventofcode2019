@@ -78,6 +78,10 @@ while (1) {
     else {
         $seen{universe}->{$uniid}=$step;
     }
+    if ($step % 1_000_000 == 0) {
+        say scalar localtime;
+        say $step;
+    }
     #  dump_map($step);
 }
 
