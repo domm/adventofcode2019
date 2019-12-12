@@ -16,7 +16,7 @@ A very easy start..
 
 ## Day 2
 
-We meet Intcode, and I try out some new Perl features. Read more about it [here](https://domm.plix.at/perl/2019_12_advent_of_code_intcode.html)
+We meet Intcode, and I try out some new Perl features. Read more about it [here](https://domm.plix.at/perl/2019_12_advent_of_code_intcode.html).
 
 **Time:** 23:00 / 06:55 / plus more to clean up Intcode.pm
 
@@ -24,7 +24,7 @@ We meet Intcode, and I try out some new Perl features. Read more about it [here]
 
 ## Day 3
 
-Not very hard, but I used an array to map all the wires instead of an hash to only index the coordinates, which makes the program not very fast. Oh, and I had a "Lattenzaun" error in the second part (which I realized after getting the wrong answer, and I just corrected the error in my head; sorry, [Farhad](https://github.com/grauwolf))
+Not very hard, but I used an array to map all the wires instead of an hash to only index the coordinates, which makes the program not very fast. Oh, and I had a "Lattenzaun" error in the second part (which I realized after getting the wrong answer, and I just corrected the error in my head but not in the code; sorry, [Farhad](https://github.com/grauwolf))
 
 **Time:** 36:42 / 14:32
 
@@ -72,7 +72,7 @@ And I also had to change the whole input/output handling if Intcode...
 
 ## Day 8
 
-Some simple Hash / Array munging again (I see a pattern here...). It took me quite a while to realize that I had to actually "render" the image for part 2, so I can read the message...
+Some simple Hash / Array munging again. It took me quite a while to realize that I had to actually "render" the image for part 2, so I can read the message...
 
 **Time:** 20:52 / 20:09
 
@@ -106,7 +106,7 @@ Intcode again, but this time there were no changes to the "compiler" necessary, 
 
 Oh, and I was very lazy and just used a rather big two-dimensional array for the hull, of which only a small part was actually used. But I did not want to handle negative array indices...
 
-**Time:** 22:22 / 05:20
+**Time:** 22:22 / 5:20
 
 **Rank:** 2370 / 2617
 
