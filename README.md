@@ -4,7 +4,7 @@ https://adventofcode.com/2019
 
 Solutions in Perl.
 
-Most of the time I use "App::TimeTracker":http://timetracker.plix.at/ to see how long it takes me. I generally try the first part after getting up (~8:00 CET), and the second part after my morning yoga or (depending on work stress) later during the day.
+Most of the time I use [App::TimeTracker](http://timetracker.plix.at/) to see how long it takes me. I generally try the first part after getting up (~8:00 CET), and the second part after my morning yoga or (depending on work stress) later during the day.
 
 ## Day 1
 
@@ -16,7 +16,7 @@ A very easy start..
 
 ## Day 2
 
-We meet Intcode, and I try out some new Perl features. Read more about it "here":https://domm.plix.at/perl/2019_12_advent_of_code_intcode.html
+We meet Intcode, and I try out some new Perl features. Read more about it [here](https://domm.plix.at/perl/2019_12_advent_of_code_intcode.html)
 
 **Time:** 23:00 / 06:55 / plus more to clean up Intcode.pm
 
@@ -24,7 +24,7 @@ We meet Intcode, and I try out some new Perl features. Read more about it "here"
 
 ## Day 3
 
-Not very hard, but I used an array to map all the wires instead of an hash to only index the coordinates, which makes the program not very fast. Oh, and I had a "Lattenzaun" error in the second part (which I realized after getting the wrong answer, and I just corrected the error in my head; sorry, "Farhad":https://github.com/grauwolf)
+Not very hard, but I used an array to map all the wires instead of an hash to only index the coordinates, which makes the program not very fast. Oh, and I had a "Lattenzaun" error in the second part (which I realized after getting the wrong answer, and I just corrected the error in my head; sorry, [Farhad](https://github.com/grauwolf))
 
 **Time:** 36:42 / 14:32
 
@@ -40,7 +40,7 @@ Another simple brute force attack...
 
 ## Day 5
 
-Yay, I can reuse Intcode.pm. Oh no, the new `modes` do not work at all with my previous implementation... hence the long time it took me to solve part 1. And my solution to parse the modes is very ugly (Read about it "here":https://domm.plix.at/perl/2019_12_advent_of_code_intcode_day_5.html where I also describe how I rewrote / cleaned up Intcode)
+Yay, I can reuse Intcode.pm. Oh no, the new `modes` do not work at all with my previous implementation... hence the long time it took me to solve part 1. And my solution to parse the modes is very ugly (Read about it [here](https://domm.plix.at/perl/2019_12_advent_of_code_intcode_day_5.html) where I also describe how I rewrote / cleaned up Intcode)
 
 But adding the new opcodes from part 2 was easy and they fit quite well into Intcode.pm!
 
@@ -52,7 +52,7 @@ But adding the new opcodes from part 2 was easy and they fit quite well into Int
 
 Again a not-so-hard problems: graphs. Which I solved by reversing the graph into an array...
 
-"Here":https://www.reddit.com/r/adventofcode/comments/e6tyva/2019_day_6_solutions/f9vjikv/?context=3 is a slightly golfed solution for part 2.
+[Here](https://www.reddit.com/r/adventofcode/comments/e6tyva/2019_day_6_solutions/f9vjikv/?context=3) is a slightly golfed solution for part 2.
 
 **Time:** 13:35 / 11:45
 
@@ -92,7 +92,7 @@ The large numbers / large memory hints did not bother my Intcode, and the one ne
 
 That was a tough one. It took me rather long to understand that the asteroids on the map are tiny points and do not take up the whole block (but it says so very clear in the instructions..). But after grabbing some graph paper and drawing the map I realized that this is not an array problem, but has to be solved with vectors. So, **math**!
 
-I used "Math::Vec":https://metacpan.org/pod/Math::Vec (because it came up first on CPAN) to calculate the unit vector (or "Einheitsvektor", which sound much cooler in German..), and using this unit vector it was trivial to filter out vectors pointing in the same direction.
+I used [Math::Vec](https://metacpan.org/pod/Math::Vec) (because it came up first on CPAN) to calculate the unit vector (or "Einheitsvektor", which sound much cooler in German..), and using this unit vector it was trivial to filter out vectors pointing in the same direction.
 
 After that, I needed a break, and finished the second task in the evening, using a very stupid approach to calculate the angle via tangens, and the sorting the asteroids by angel to nuke them. Even though I was quite proud that I still remembered enough math from school to cobble together my code (using some online math tutorials for the math details), I have the feeling that there are way more elegant solutions than mine...
 
