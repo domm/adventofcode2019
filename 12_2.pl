@@ -29,7 +29,9 @@ foreach my $line (<STDIN>) {
 $seen{universe}->{join(';',@uni)}=0;
 my %first;
 #dump_map(0);
-for my $step (1 .. 2780) {
+my $step =0;
+while (1) {
+    $step++;
     # apply gravity
     for my $i (0 .. 3) {
         my $moon = $map[$i];
