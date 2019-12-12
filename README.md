@@ -4,7 +4,7 @@ https://adventofcode.com/2019
 
 Solutions in Perl.
 
-Most of the time I use [App::TimeTracker](http://timetracker.plix.at/) to see how long it takes me. I generally try the first part after getting up (~8:00 CET), and the second part after my morning yoga or (depending on work stress) later during the day.
+Most of the time I use [App::TimeTracker](http://timetracker.plix.at/) to see how long it takes me. I generally try the first part after getting up (~8:00 CET), and the second part after my morning yoga or (depending on work stress / problem complexity) later during the day.
 
 ## Day 1
 
