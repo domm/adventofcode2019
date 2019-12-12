@@ -7,7 +7,7 @@ my $moon="A";
 my %seen;
 my @uni;
 
-#use Math::Utils qw(lcm);
+use Math::Utils qw(lcm);
 
 foreach my $line (<STDIN>) {
     chomp($line);
@@ -22,12 +22,11 @@ foreach my $line (<STDIN>) {
         vy=>0,
         vz=>0,
     });
-    my $id = join(',',$x,$y,$z,0,0,0);
-    $seen{$name}->{$id}=[0];
-    push(@uni,$id);
 }
-$seen{universe}->{join(';',@uni)}=0;
-my %first;
+
+my %found;
+calc_seen(0);
+
 #dump_map(0);
 my $step =0;
 while (1) {
@@ -55,34 +54,9 @@ while (1) {
             my $vfld='v'.$fld;
             $moon->{$fld}+=$moon->{$vfld};
         }
-        my $id =  join(',',map {$moon->{$_}} qw(x y z vx vy vz));
-        # if (exists $seen{$moon->{name}}->{$id}) {
-        #     $first{$moon->{name}} ||=$step;
-        #     say "$moon->{name} was here! $step";
-        #     push($seen{$moon->{name}}->{$id}->@*,$id);
-        # }
-        # else {
-        #     $seen{$moon->{name}}->{$id}=[$step];
-        # }
-        push(@uni,$id);
     }
-    my $uniid=join(';',@uni);
-    if (exists $seen{universe}->{$uniid}) {
-        my $prev = $seen{universe}->{$uniid};
-        say "at $step, we've been here at $prev";
-        # use Data::Dumper; $Data::Dumper::Maxdepth=3;$Data::Dumper::Sortkeys=1;warn Data::Dumper::Dumper \%first;
 
-        #say lcm(values %first);
-        exit;
-    }
-    else {
-        $seen{universe}->{$uniid}=$step;
-    }
-    if ($step % 1_000_000 == 0) {
-        say scalar localtime;
-        say $step;
-    }
-    #  dump_map($step);
+    calc_seen($step);
 }
 
 sub dump_map {
@@ -104,5 +78,37 @@ sub gravity_axis {
         $moon->{$vfld}--;
         $other->{$vfld}++;
     }
+}
+
+# I figured it has to do something with LCM, but did not know about "independent axis", so I was only able to solve this after reading the reddit thread...
+sub calc_seen {
+    my $step = shift;
+    my %ids;
+
+    for my $moon (@map) {
+        for my $dim (qw(x y z)) {
+            push($ids{$dim}->@*, $moon->{$dim},$moon->{'v'.$dim});
+        }
+    }
+
+    for my $dim (qw(x y z)) {
+        unless (exists $found{$dim}) {
+            my $id = join(',',$ids{$dim}->@*);
+            if (exists $seen{$id}) {
+                say "FOUND $dim sam as ".$seen{$id}." at $step";
+                $found{$dim}=$step;
+            }
+            else {
+                $seen{$id}=$step;
+            }
+        }
+    }
+
+    if (keys %found == 3) {
+        say "step $step";
+        say "will reach state again at ".lcm(values %found);
+        exit;
+    }
+
 }
 
