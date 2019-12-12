@@ -7,7 +7,7 @@ my $moon="A";
 my %seen;
 my @uni;
 
-use Math::Utils qw(lcm);
+#use Math::Utils qw(lcm);
 
 foreach my $line (<STDIN>) {
     chomp($line);
