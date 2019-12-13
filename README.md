@@ -120,3 +120,17 @@ After reading reddit, I figured out (from various code fragments) that I can cal
 
 **Rank:** 3035 / 2071
 
+## Day 13
+
+Part one was a rather easy Intcode exercice, part two not so much.
+
+As I did not want to play the game, I thought I could cheat by looking at the Intcode source of the game to figure out how the scores are calculated. I wasted an hour adding debugging and introspection to Intcode, but made no progress, so I stopped (and baked a cake).
+
+Later I added a manual interface so I could actually play the game, the interface was very clunky and I always died before even coming close to cleaning the board. Reddit suggested writing some AI to steer the paddle, which I did (with a lot of hilarous mistakes on my part) and took me another hour.
+
+But in the end I got a working solution! I added an option to render the game play (at different speeds), and later learned to use `byzanz-record` to record my term to a [gif](https://github.com/domm/adventofcode2019/blob/master/13_2.gif). To make this nicer, I used some simple unicode chars to render the game.
+
+**Time:** 07:34 / 02:01:16 plus some time for cleanup and recording a gif
+
+**Rank:** 2692 / 3338
+
