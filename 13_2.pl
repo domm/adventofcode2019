@@ -19,6 +19,7 @@ while (!$intcode->waiting) {
 #@data = (1,2,3,6,5,4);
 
 my @game;
+my $clear_string = `clear`;
 
 while (@data) {
     my ($x, $y, $t) = (shift(@data), shift(@data), shift(@data));
@@ -30,9 +31,14 @@ k=>0,
 l=>1
 );
 my @score;
+my $total=0;
+show();
 while (!$intcode->halted) {
     if ($intcode->waiting) {
-        my $key = ReadKey -1;
+        my $key;
+        while (!defined $key) {
+            $key = ReadKey -1;
+        }
         my $in = $in{$key};
         #my $in = <STDIN>;
         chomp($in);
@@ -47,19 +53,19 @@ while (!$intcode->halted) {
     }
     if ($update[0] == -1 && $update[1] == 0) {
         push(@score,$update[2]);
+        $total+=$update[2];
         say "SCORE ".$update[2];
     }
     else {
         $game[$update[1]]->[$update[0]] = $update[2];
-        show();
-
     }
+    show();
 }
 
 # 45,75, 166,208
-
 sub show {
-    `clear`;
+    print $clear_string;
+    say "j=left, k=stay, l=right    SCORE ".$total;
     for my $r ( @game ) {
         for my $c ( @$r ) {
             print $c || ' ';
@@ -67,5 +73,5 @@ sub show {
         print "\n";
     }
 }
-
+sub END{ReadMode 'normal' }
 

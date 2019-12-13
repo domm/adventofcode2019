@@ -8,7 +8,7 @@ no warnings 'experimental::signatures';
 
 use base qw(Class::Accessor::Fast);
 
-__PACKAGE__->mk_accessors(qw(pos code modes output input halted relbase));
+__PACKAGE__->mk_accessors(qw(pos code modes output input halted waiting relbase));
 
 use constant DEBUG => 0;
 
@@ -19,6 +19,7 @@ sub new ($class, $code, $pos = 0) {
         modes => [],
         input => [],
         halted=>0,
+        waiting=>0,
         relbase=>0,
     }, $class;
 }
@@ -64,10 +65,12 @@ sub op_3 ($self) { # input
     my $in = shift($self->input->@*);
     say "got input ".( $in || 'nothing yet') if DEBUG;
     unless (defined $in) {
+        $self->waiting(1);
         $self->{pos} = $self->{pos}-1;
         return undef;
     }
     $self->val($in);
+    $self->waiting(0);
 }
 
 sub op_4 ($self) { # output
