@@ -49,7 +49,6 @@ while (!$intcode->waiting) {
         $map[$y]->[$x] = $here;
         $y = $ty;
         $x = $tx;
-        $map[$ty]->[$tx] = 'd';
         #   say "moved to $ty $tx";
     }
     elsif ($status == 2) {
@@ -80,10 +79,17 @@ sub show {
     #select(undef,undef,undef,0.001);
     print $clear_string;
     #$map[30]->[30]='X';
-    open(my $out, ">","15.out");
-    for my $r ( @map ) {
-        for my $c ( @$r ) {
-            print $c || ' ';
+    for my $r (0 .. 41) {
+        for my $c ( 0 .. 50 ) {
+            if ($r == 30 && $c == 30) {
+                print 'S';
+            }
+            elsif ($r == $y && $c == $x) {
+                print '*';
+            }
+            else {
+                print $map[$r]->[$c] || ' ';
+            }
         }
         print "\n";
     }
