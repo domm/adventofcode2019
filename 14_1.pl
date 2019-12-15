@@ -20,36 +20,28 @@ foreach my $line (<STDIN>) {
         push($needs{$out_p}->{sources}->@*,[$in_p, $in_q]);
     }
 }
-use Data::Dumper; $Data::Dumper::Maxdepth=5;$Data::Dumper::Sortkeys=1;warn Data::Dumper::Dumper \%needs;
 
-my $total_ore_needed=0;
 
 my %stuff;
-my %shopping_list=();
 my $level=0;
-make_list('FUEL',1,1);
+my $total_ore_needed=0;
+produce('FUEL',1);
 
-
-sub make_list {
+sub produce {
     my ($product, $amount_needed, $ore) = @_;
     $level++;
+    print "\n";
     my $deps = $needs{$product}->{sources};
     my $amount_produced = $ore || $needs{$product}->{amount};
-    out("We need $amount_needed of $product, one round does $amount_produced");
-    my ($rounds,$amount_needed)  = rounds($product, $amount_needed, $amount_produced);
-
-    if ($amount_needed < 0) {
-        out("we have enough of $product");
-        $stuff{$product}+=$amount_needed;
-        return;
-    }
-    out( "produce $product: need $amount_needed; produced $amount_produced => need $rounds") ;
+    out("We need $amount_needed of $product");
+    my ($rounds, $amount_needed)  = rounds($product, $amount_needed, $amount_produced);
+    out("We need $amount_needed of $product, one round does $amount_produced, so do $rounds rounds");
     foreach my $prod_info ($deps->@*) {
         if ($prod_info->[0] eq 'ORE') {
-            make_list('ORE', $rounds * $prod_info->[1] ,$prod_info->[1] );
+            produce('ORE', $rounds * $prod_info->[1] ,$prod_info->[1] );
         }
         else {
-            make_list($prod_info->[0], $prod_info->[1] * $rounds );
+            produce($prod_info->[0], $prod_info->[1] * $rounds );
         }
     }
 
@@ -69,15 +61,21 @@ sub make_list {
     $level--;
 }
 
-say "total ore $total_ore_needed";
-exit;
+say "total ore needed: $total_ore_needed";
 
 sub rounds {
     my ($product, $amount_needed, $amount_produced) = @_;
 
     if (my $leftover = $stuff{$product}){
-        out("still have $leftover from $product lying around");
-        $amount_needed -= $leftover;
+        out("still have $leftover from $product lying around, using it");
+        if ($amount_needed > $leftover) {
+            $amount_needed -= $leftover;
+            $stuff{$product} = 0;
+        }
+        else {
+            $stuff{$product}-=$amount_needed;
+            return (0,0);
+        }
     }
 
     my $rounds = ceil($amount_needed/$amount_produced);
