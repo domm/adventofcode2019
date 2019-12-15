@@ -7,7 +7,7 @@ use Intcode;
 my $intcode = Intcode->from_file($ARGV[0]);
 my @map;
 #$map[30]->[30]='X';
-my $x = my $y = 30;
+my $x = my $y = 24;
 my @moves=(
     undef,
     [-1, 0, 4, 3], #n
@@ -89,9 +89,9 @@ sub show {
     print $clear_string;
     #$map[30]->[30]='X';
     say "currently at $y / $x, distance: ".$dist{$y.':'.$x};
-    for my $r (0 .. 41) {
-        for my $c ( 0 .. 50 ) {
-            if ($r == 30 && $c == 30) {
+    for my $r (0 .. 45) {
+        for my $c ( 0 .. 45 ) {
+            if ($r == 24 && $c == 24) {
                 print 'S';
             }
             elsif ($r == $y && $c == $x) {
