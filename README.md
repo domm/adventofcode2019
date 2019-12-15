@@ -160,7 +160,7 @@ how to calculate the minimum distance)
 Getting the minimum distance turned out to be quite easy: I just
 counted the steps and stored them at each coordinate; if I later
 backtracked through an already visited point, I started counting again
-from the distanced stored there.
+from the distance stored there.
 
 [Here is a gif for part 1](https://raw.githubusercontent.com/domm/adventofcode2019/master/15_1.gif) 
 
