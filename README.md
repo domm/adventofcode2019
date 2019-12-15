@@ -122,15 +122,72 @@ After reading reddit, I figured out (from various code fragments) that I can cal
 
 ## Day 13
 
-Part one was a rather easy Intcode exercice, part two not so much.
+Part one was a rather easy Intcode exercise, part two not so much.
 
 As I did not want to play the game, I thought I could cheat by looking at the Intcode source of the game to figure out how the scores are calculated. I wasted an hour adding debugging and introspection to Intcode, but made no progress, so I stopped (and baked a cake).
 
-Later I added a manual interface so I could actually play the game, the interface was very clunky and I always died before even coming close to cleaning the board. Reddit suggested writing some AI to steer the paddle, which I did (with a lot of hilarous mistakes on my part) and took me another hour.
+Later I added a manual interface so I could actually play the game, the interface was very clunky and I always died before even coming close to cleaning the board. Reddit suggested writing some AI to steer the paddle, which I did (with a lot of hilarious mistakes on my part) and took me another hour.
 
 But in the end I got a working solution! I added an option to render the game play (at different speeds), and later learned to use `byzanz-record` to record my term to a [gif](https://github.com/domm/adventofcode2019/blob/master/13_2.gif). To make this nicer, I used some simple unicode chars to render the game.
 
 **Time:** 07:34 / 02:01:16 plus some time for cleanup and recording a gif
 
 **Rank:** 2692 / 3338
+
+## Day 14
+
+Things start to get annoyingly complex, not sure I want too keep up with it for a lot longer...
+
+In theory, the task looked simple (walk a chain of dependencies, and calculate some sums), but the fact that each reaction produced weird amount of chemicals, and that you have to use the leftovers made this my most-hated task (up to now..). I worked an hour during the late afternoon, and two more after coming back from a friends exhibition.
+
+The second part was then quite easy, though I got some errors because I forgot to reset the leftovers between each run. And I was too lazy to implement a binary search, and just did a quick guesstimate from the commandline, and then run a stupid incrementing brute force attack (all of which took another 20min, but at 1:00 in the morning...)
+
+**Time:** 02:53:16 / 00:19:12
+
+**Rank:** 4954 / 4337
+
+## Day 15
+
+I hardly notice that I'm using Intcode anymore :-)
+
+Getting to move the droid through the maze was not that hard, but I could not figure out how to implement a proper maze solver, so I went for a "random mouse" approach, which I later finetuned to not enter known dead-ends again.
+
+I actually found the oxygen system quite fast using a pure random
+approach, but spend about 30 minutes implementing the dead-end
+detection (because some random runs took ages, and I didn't figure out
+how to calculate the minimum distance)
+
+Getting the minimum distance turned out to be quite easy: I just
+counted the steps and stored them at each coordinate; if I later
+backtracked through an already visited point, I started counting again
+from the distanced stored there.
+
+[Here is a gif for part 1](https://raw.githubusercontent.com/domm/adventofcode2019/master/15_1.gif) 
+
+For the second part I took a maybe weird approach: From a previous
+run, I had a complete map lying around (when the random mouse was very
+thorough), so I applied 4 regex to simulate the spread of the
+oxygen:
+
+```
+$maze=~s/\.O/oO/g;               # spread left
+$maze=~s/O(.{$width})\./O$1o/sg; # spread down
+# etc
+```
+
+I missed a few corner cases in my first try:
+
+* `s/.O/OO/g` would allow the next regex to pick up an oxygen that was just generated, so I changed the 4 regex to `s/.O/Oo/g` and then converted `o` to `O` after all where done.
+* a bit trickier to catch was that if there were two up/downward spreads in the same row, only one would match, so I packed each regex into a while-loop
+
+[And here is a gif for part 2](https://raw.githubusercontent.com/domm/adventofcode2019/master/15_2.gif) 
+
+**Time:** 02:05:27 / 00:45:56
+
+**Rank:** 3015 / 2794
+
+
+
+
+
 
