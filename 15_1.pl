@@ -18,12 +18,13 @@ my @moves=(
 
 my $s=0;
 my $dir=1;
+my $distance=0;
+my %dist;
 my $clear_string = `clear`;
 while (!$intcode->waiting) {
     show() if $s % 1000 == 0;
     #say "$s at $y $x";
     my $here = $map[$y]->[$x];
-    $here ='.' if $here eq 'd';
     my @free;
     for my $ld (qw(1 4 2 3)) {
         push(@free,$ld) if !wall_at($x, $y, $ld);
@@ -45,7 +46,14 @@ while (!$intcode->waiting) {
         $map[$ty]->[$tx] = '#';
     }
     elsif ($status == 1) {
-        $map[$ty]->[$tx] ||='.';
+        if ($dist{$ty.':'.$tx}) {
+            $distance = $dist{$ty.':'.$tx};
+        }
+        else {
+            $distance++;
+            $dist{$ty.':'.$tx} = $distance;
+            $map[$ty]->[$tx]='.';
+        }
         $map[$y]->[$x] = $here;
         $y = $ty;
         $x = $tx;
@@ -53,8 +61,9 @@ while (!$intcode->waiting) {
     }
     elsif ($status == 2) {
         $map[$ty]->[$tx]='O';
+        $distance++;
         show();
-        say "$s FOUND at $ty $tx";
+        say "$s FOUND at $ty $tx, distance $distance";
         last;
     }
     $s++;
@@ -79,6 +88,7 @@ sub show {
     #select(undef,undef,undef,0.001);
     print $clear_string;
     #$map[30]->[30]='X';
+    say "currently at $y / $x, distance: ".$dist{$y.':'.$x};
     for my $r (0 .. 41) {
         for my $c ( 0 .. 50 ) {
             if ($r == 30 && $c == 30) {
