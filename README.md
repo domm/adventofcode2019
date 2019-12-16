@@ -186,8 +186,51 @@ I missed a few corner cases in my first try:
 
 **Rank:** 3015 / 2794
 
+## Day 16
 
+A not too hard first part (though my solution is rather convoluted), and a second part I could have never solved without reddit and looking at various solutions.
 
+I found [this comment]:https://www.reddit.com/r/adventofcode/comments/ebf5cy/2019_day_16_part_2_understanding_how_to_come_up/fb4a34p especially helpful. As pointed out on reddit, the sequence we are looking for is always in the second half of the signal. But the pattern for the second half will only consist of 0 and 1. So we can calculate the next row by working through the current row from behind:
 
+```
+this_phase: ... 6  9  9  8
+next_phase: ... ?  ?  ?  ?
+```
+
+Work from right to left (i.e. reverse the list). For the last digit, just copy the last digit to the next row (because the last `pattern` will always be  `… 0 0 0 1`, so we need to add a lot of zeros to `1 * last digit`)
+
+```
+this_phase: ... 6  9  9  8
+next_phase: ... ?  ?  ?  8
+```
+
+From then on, take the current digit and add the all the following digits, because the pattern will always be `… 0 1 1+`. But as we store the sum of this calculation into the next row, we don't have to always calc this long sum. We can just re-use the result of the last calculation, i.e. the field in the next phase we have just calculated:
+
+```
+this_phase: ... 6  9 >9< 8
+next_phase: ... ?  ?  ? >8<
+```
+
+`8 + 9 = 17`, take the last digit (i.e. `modulo 10`) and store it in the next phase
+
+```
+this_phase: ... 6  9  9  8
+next_phase: ... ?  ? >7< 8
+```
+
+In the next phase the pre-calced sum trick should be obvious:
+
+```
+this_phase: ... 6  9  9  8
+next_phase: ... ? >?< 7 8
+```
+
+We could do `9 + 9 + 8 = 16`. But we have just calculated `9 + 8 = 17 => mod 10 => 7` and stored this in the next row. And thanks to math, `9 + 7 = 16 => mod 10 => 6` yields the same result as `9 + 9 + 8 = 16 => mod 10 => 6`. yay!
+
+so, this will be much quicker: 9 + 7 = 16 => 6; 6 + 6 = 12 => 2, ...
+
+**Time:** 36:38 / at least 2 hours
+
+**Rank:** 2612 / 2374 - wow, good rank at 12:52:09 :-)
 
 
