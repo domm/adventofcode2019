@@ -235,7 +235,13 @@ so, this will be much quicker: 9 + 7 = 16 => 6; 6 + 6 = 12 => 2, ...
 
 ## Day 17
 
-writeup coming soon
+That was a nice one, by favorite puzzle so far!
+
+The first part was rather easy, just convert the Incode output to ASCII and then walk the map to find intersections.
+
+For the second part, it took me some time to rework my run-loop to handle all the input/output (I should really add a proper `prompt` method to Intcode). I really liked the "live video feed" feature and spend some time implementing a clear-screen feature so I can properly view the feed.
+
+For solving the actual puzzle, I was too lazy to implement anything. Instead I just counted the steps / directions by hand, wrote them down, and very easily spotted the correct pattern. This took my less then 10 minutes, considerably faster then any smart solution I could code (the human brain **is** a quite powerful computer / patter detector, especially when we're only caring about one case...)
 
 **Time:** 28:24 / 56:41 (45min to get IO etc working, then 10 minutes to solve the maze by hand)
 
