@@ -11,6 +11,7 @@ my @map;
 my $intcode = Intcode->from_file($ARGV[0]);
 $intcode->code->[0]=2;
 
+# solved using my actual brain
 #   A  L,10,R,8,R,6,R,10,
 #   B  L,12,R,8,L,12,
 #   A  L,10,R,8,R,6,R,10,
@@ -22,13 +23,12 @@ $intcode->code->[0]=2;
 #   C  L,10,R,8,R,8,
 #   A  L,10,R,8,R,6,R,10'
 
-
 my @inputs = (
     'A,B,A,B,C,C,B,A,C,A',
     'L,10,R,8,R,6,R,10',
     'L,12,R,8,L,12',
     'L,10,R,8,R,8',
-    'n'
+    'y'
 );
 while (@inputs) {
     while (!$intcode->waiting) {
@@ -44,35 +44,23 @@ while (@inputs) {
 my $clear = `clear`;
 my $prev=0;
 while (!$intcode->waiting) {
-        $intcode->runit;
-        my $o = $intcode->output;
-        if ($prev == 10 && $o == 10) {
-            select(undef,undef,undef,0.1);
-            print $clear;
-        }
-        elsif ($o > 128) {
-            say "GOT DUST: $o";
-            exit;
-        }
-        elsif (chr($o) eq 'X') {
-            say "lost in space";
-            exit;
-        }
-        else {
-            print chr($o);
-            $prev=$o
-        }
+    $intcode->runit;
+    my $o = $intcode->output;
+    if ($prev == 10 && $o == 10) {
+        select(undef,undef,undef,0.1);
+        print $clear;
     }
-
-
-#show();
-
-__END__
-sub show {
-    for my $r (0 .. $#map) {
-        for my $c ( 0 .. $maxc ) {
-            print $map[$r]->[$c] || ' ';
-        }
-        print "\n";
+    elsif ($o > 128) {
+        say "GOT DUST: $o";
+        exit;
+    }
+    elsif (chr($o) eq 'X') {
+        say "lost in space";
+        exit;
+    }
+    else {
+        print chr($o);
+        $prev=$o
     }
 }
+
