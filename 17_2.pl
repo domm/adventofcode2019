@@ -9,39 +9,48 @@ binmode STDERR, ':utf8';
 
 my @map;
 my $intcode = Intcode->from_file($ARGV[0]);
-say $intcode->code->[0];
 $intcode->code->[0]=2;
-say $intcode->code->[0];
-while (!$intcode->waiting) {
-    $intcode->runit;
-    print chr($intcode->output);
-}
 
 my @inputs = (
     'A',
+    'L,2',
     'L,5',
     'L,5',
-    'L,5',
-    'y'
+    'n'
 );
-
-foreach my $in (@inputs) {
-    say $in;
-    $intcode->input([ map { ord($_)} split(//,$in), "\n" ]);
-    $intcode->waiting(0);
+while (@inputs) {
     while (!$intcode->waiting) {
         $intcode->runit;
         print chr($intcode->output);
     }
+    my $in = shift(@inputs);
+    say "$in";
+    $intcode->input([ map { ord($_)} split(//,$in), "\n" ]);
+    $intcode->waiting(0);
 }
 
-say "DONE WITH NPUT";
-
-$intcode->waiting(0);
+my $clear = `clear`;
+my $prev=0;
 while (!$intcode->waiting) {
-    $intcode->runit;
-    print chr($intcode->output);
-}
+        $intcode->runit;
+        my $o = $intcode->output;
+        if ($prev == 10 && $o == 10) {
+            select(undef,undef,undef,0.1);
+            print $clear;
+        }
+        elsif ($o > 128) {
+            say "GOT DUST: $o";
+            exit;
+        }
+        elsif (chr($o) eq 'X') {
+            say "lost in space";
+            exit;
+        }
+        else {
+            print chr($o);
+            $prev=$o
+        }
+    }
 
 
 #show();
