@@ -11,11 +11,23 @@ my @map;
 my $intcode = Intcode->from_file($ARGV[0]);
 $intcode->code->[0]=2;
 
+#   A  L,10,R,8,R,6,R,10,
+#   B  L,12,R,8,L,12,
+#   A  L,10,R,8,R,6,R,10,
+#   B  L,12,R,8,L,12,
+#   C  L,10,R,8,R,8,
+#   C  L,10,R,8,R,8,
+#   B  L,12,R,8,L,12,
+#   A  L,10,R,8,R,6,R,10,
+#   C  L,10,R,8,R,8,
+#   A  L,10,R,8,R,6,R,10'
+
+
 my @inputs = (
-    'A',
-    'L,2',
-    'L,5',
-    'L,5',
+    'A,B,A,B,C,C,B,A,C,A',
+    'L,10,R,8,R,6,R,10',
+    'L,12,R,8,L,12',
+    'L,10,R,8,R,8',
     'n'
 );
 while (@inputs) {
