@@ -233,4 +233,11 @@ so, this will be much quicker: 9 + 7 = 16 => 6; 6 + 6 = 12 => 2, ...
 
 **Rank:** 2612 / 2374 - wow, good rank at 12:52:09 :-)
 
+## Day 17
+
+writeup coming soon
+
+**Time:** 28:24 / 56:41 (45min to get IO etc working, then 10 minutes to solve the maze by hand)
+
+**Rank:** 2072 / 1062 (damn it, just missed 3 digits, but best rank ever)
 
