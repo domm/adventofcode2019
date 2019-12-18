@@ -247,3 +247,11 @@ For solving the actual puzzle, I was too lazy to implement anything. Instead I j
 
 **Rank:** 2072 / 1062 (damn it, just missed 3 digits, but best rank ever)
 
+## Day 18
+
+No, thanks!
+
+**Time**: - / -
+
+**Rank:** - / -
+
