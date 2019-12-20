@@ -122,7 +122,7 @@ sub val {
     say "GET $mode $pointer" if DEBUG;
     if ($mode == 0) {
         $self->code->[$pointer] = $val if defined $val;
-        return $self->code->[ $pointer];
+        return $self->code->[ $pointer] || 0;
     }
     elsif ($mode == 1) {
         die "mode 1 not to be used on set!" if defined $val;
@@ -130,7 +130,7 @@ sub val {
     }
     elsif ($mode == 2) {
         $self->code->[$self->relbase + $pointer] = $val if defined $val;
-        return $self->code->[$self->relbase + $pointer];
+        return $self->code->[$self->relbase + $pointer] || 0;
     }
     die "invalid mode $mode";
 }

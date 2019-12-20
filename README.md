@@ -255,3 +255,28 @@ No, thanks!
 
 **Rank:** - / -
 
+## Day 19
+
+Part 1 was another easy Intcode test. Part 2 was not that hard (in the end), but I managed to fuck up quite spectacularly.
+
+First I was doing a lookahead 100 rows down, but always used the same y coordinate. But of course you have to go to the end of the current row, subtract 100 and look down from there. As I wasn't finding anything, I did quite some calculations on the slope of the beam, and jumped 10.000 rows ahead. But I could never find something because I was looking in the wrong place.
+
+After I realized that I implemented a proper lookahead, but I called my `scan` function with bad params (I forgot to pass in the row, so I was always checking the 0th row... I guess one can find an argument for strong typing or at least param validation / signatures here...)
+
+After I fixed that, I found the result reasonably fast using brute force (and some skipping).
+
+**Time**: 08:59 / 02:47:06
+
+**Rank:** 1731 / 1862
+
+## Day 20
+
+ugh, another maze. I still don't feel like a rat, so another skip for me...
+
+But maybe I should learn how to write a maze solver some time before next advent :-)
+
+**Time**: - / -
+
+**Rank:** - / -
+
+
