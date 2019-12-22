@@ -279,4 +279,9 @@ But maybe I should learn how to write a maze solver some time before next advent
 
 **Rank:** - / -
 
+## Day 21++
+
+`if ($holidays->started) { $me->stop('advent') }`
+
+I might do some/all tasks later...
 
