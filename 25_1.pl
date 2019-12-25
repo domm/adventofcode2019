@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use lib '.';
 use Intcode;
+use Math::Combinatorics;
 
 binmode STDOUT, ':utf8';
 binmode STDERR, ':utf8';
@@ -61,10 +62,35 @@ while (@collect) {
 }
 
 dropall();
+#try_items(@things);
+# this seems to work (but it crashes: candy cane, fixed point, polygon, shell)
+
+my @match=('candy cane', 'fixed point', 'polygon', 'shell');
+pickup(@match);
 manual();
 
-#sub items {
-#my @try = @things;
+sub try_items {
+    my @list = @_;
+    my @try = @list;
+    my $max = scalar @try;
+
+    for my $cnt (0 .. $max) {
+        my $c = Math::Combinatorics->new(
+            count => $max - $cnt,
+            data => \@try,
+        );
+        while (my @combo = $c->next_combination) {
+            say "COMBO $cnt ".join(", ",sort @combo);
+            dropall();
+            for my $try (@combo) {
+                input('take '.$try);
+                doit();
+            }
+            input('west');
+            doit();
+        }
+    }
+}
 
 sub manual {
     while (1) {
@@ -81,6 +107,13 @@ sub dropall {
         doit();
     }
 }
+sub pickup {
+    my @stuff = @_;
+    for my $thing (@stuff) {
+        input('take '.$thing);
+        doit();
+    }
+}
 
 sub input {
     my $in = shift;
@@ -89,6 +122,7 @@ sub input {
 }
 
 sub doit {
+    my $output;
     while (!$intcode->waiting) {
         $intcode->runit;
         my $o = $intcode->output;
@@ -99,7 +133,8 @@ sub doit {
         else {
             $newline = 0;
         }
-        print chr($o);
+        $output.= chr($o);
     }
+    say $output;
 }
 
