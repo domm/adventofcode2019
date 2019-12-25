@@ -285,6 +285,14 @@ But maybe I should learn how to write a maze solver some time before next advent
 
 I might do some/all tasks later...
 
+## Day 22
+
+Some simple array munging, which does not scale for part 2 :-(
+
+**Time**: 32:06 / -
+
+**Rank:** 2984 / -
+
 ## Day 25
 
 Hm, it was very easy to get some Intcode processor to manually explore the ship and figure out which items to collect where. Then it took me ages to correctly use Math::Combinatorics to get all the combinations of items to try. And in the end my Intcode just crashed after providing the hopefully correct solution (which I fixed now, see next para)
