@@ -287,7 +287,12 @@ I might do some/all tasks later...
 
 ## Day 25
 
-Hm, it was very easy to get some Intcode processor to manually explore the ship and figure out which items to collect where. Then it took me ages to correctly use Math::Combinatorics to get all the combinations of items to try. And in the end my Intcode just crashed after providing the hopefully correct solution :-(
+Hm, it was very easy to get some Intcode processor to manually explore the ship and figure out which items to collect where. Then it took me ages to correctly use Math::Combinatorics to get all the combinations of items to try. And in the end my Intcode just crashed after providing the hopefully correct solution (which I fixed now, see next para)
 
+I verified my solution using [somebody elses](https://github.com/choroba/) solution. ~~So it seems there is a bug in my Intcode???~~ No, the problem was that for debugging I buffered the output, but did not print the output after the last iteration. D'oh!
+
+**Time**: 2:17:57 / -
+
+**Rank:** 2142 / -
 
 

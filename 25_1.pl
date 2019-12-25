@@ -5,10 +5,6 @@ use lib '.';
 use Intcode;
 use Math::Combinatorics;
 
-binmode STDOUT, ':utf8';
-binmode STDERR, ':utf8';
-
-my @map;
 my $intcode = Intcode->from_file($ARGV[0]);
 
 my @collect=(
@@ -62,12 +58,11 @@ while (@collect) {
 }
 
 dropall();
-#try_items(@things);
-# this seems to work (but it crashes: candy cane, fixed point, polygon, shell)
+try_items(@things);
 
-my @match=('candy cane', 'fixed point', 'polygon', 'shell');
-pickup(@match);
-manual();
+#my @match=('candy cane', 'fixed point', 'polygon', 'shell');
+#pickup(@match);
+#manual();
 
 sub try_items {
     my @list = @_;
@@ -122,7 +117,6 @@ sub input {
 }
 
 sub doit {
-    my $output;
     while (!$intcode->waiting) {
         $intcode->runit;
         my $o = $intcode->output;
@@ -133,8 +127,7 @@ sub doit {
         else {
             $newline = 0;
         }
-        $output.= chr($o);
+        print chr($o);
     }
-    say $output;
 }
 
