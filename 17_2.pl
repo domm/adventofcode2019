@@ -30,16 +30,8 @@ my @inputs = (
     'L,10,R,8,R,8',
     'y'
 );
-while (@inputs) {
-    while (!$intcode->waiting) {
-        $intcode->runit;
-        print chr($intcode->output);
-    }
-    my $in = shift(@inputs);
-    say "$in";
-    $intcode->input([ map { ord($_)} split(//,$in), "\n" ]);
-    $intcode->waiting(0);
-}
+
+$intcode->ascii_input_bulk(@inputs);
 
 my $clear = `clear`;
 my $prev=0;
