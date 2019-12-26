@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use lib '.';
 use Intcode;
+use Term::ANSIColor qw(colored);
 
 binmode STDOUT, ':utf8';
 binmode STDERR, ':utf8';
@@ -40,9 +41,7 @@ while (!$intcode->waiting) {
     $intcode->runit;
     my $o = $intcode->output;
     if ($prev == 10 && $o == 10) {
-        print $out;
-        # select(undef,undef,undef,0.01);
-        print $clear;
+        print $clear . $out;
         $out='';
     }
     elsif ($o > 128) {
@@ -54,7 +53,16 @@ while (!$intcode->waiting) {
         exit;
     }
     else {
-        $out.=chr($o);
+        my $c = chr($o);
+        if ($c =~/[<>v^]/) {
+            $out.=colored($c, 'bold red');
+        }
+        elsif ($c eq '.') {
+            $out.=' ';
+        }
+        else {
+            $out.=$c;
+        }
         $prev=$o;
     }
 }
