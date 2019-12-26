@@ -8,7 +8,7 @@ no warnings 'experimental::signatures';
 
 use base qw(Class::Accessor::Fast);
 
-__PACKAGE__->mk_accessors(qw(pos code modes output input halted waiting relbase));
+__PACKAGE__->mk_accessors(qw(pos code modes output input halted waiting relbase show_ascii_output));
 
 use constant DEBUG => 0;
 
@@ -21,6 +21,7 @@ sub new ($class, $code, $pos = 0) {
         halted=>0,
         waiting=>0,
         relbase=>0,
+        show_ascii_output=>1,
     }, $class;
 }
 
@@ -139,6 +140,28 @@ sub read_pos ($self) {
     my $pos = $self->pos ;
     $self->pos($pos + 1);
     return $pos;
+}
+
+sub ascii_input ($self, $in) {
+    $in .= "\n" unless $in =~/\n$/s;
+    $self->input([ map { ord($_)} split(//,$in) ]);
+    $self->waiting(0);
+    $self->ascii_run;
+}
+
+sub ascii_input_bulk ($self, @inputs) {
+    for my $in (@inputs) {
+        $in .= "\n" unless $in =~/\n$/;
+        push($self->input->@*, map { ord($_)} split(//,$in));
+    }
+}
+
+sub ascii_run ($self) {
+    while (!$self->waiting) {
+        $self->runit;
+        print chr($self->output) if $self->show_ascii_output;
+        exit if $self->halted;
+    }
 }
 
 1;
