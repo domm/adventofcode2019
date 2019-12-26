@@ -94,7 +94,7 @@ That was a tough one. It took me rather long to understand that the asteroids on
 
 I used [Math::Vec](https://metacpan.org/pod/Math::Vec) (because it came up first on CPAN) to calculate the unit vector (or "Einheitsvektor", which sound much cooler in German..), and using this unit vector it was trivial to filter out vectors pointing in the same direction.
 
-After that, I needed a break, and finished the second task in the evening, using a very stupid approach to calculate the angle via tangens, and the sorting the asteroids by angel to nuke them. Even though I was quite proud that I still remembered enough math from school to cobble together my code (using some online math tutorials for the math details), I have the feeling that there are way more elegant solutions than mine...
+After that, I needed a break, and finished the second task in the evening, using a very stupid approach to calculate the angle via tangens, and the sorting the asteroids by angle to nuke them. Even though I was quite proud that I still remembered enough math from school to cobble together my code (using some online math tutorials for the math details), I have the feeling that there are way more elegant solutions than mine...
 
 **Time:** 1:07:32 / 30:34
 
@@ -241,7 +241,7 @@ The first part was rather easy, just convert the Incode output to ASCII and then
 
 For the second part, it took me some time to rework my run-loop to handle all the input/output (I should really add a proper `prompt` method to Intcode). I really liked the "live video feed" feature and spend some time implementing a clear-screen feature so I can properly view the feed.
 
-For solving the actual puzzle, I was too lazy to implement anything. Instead I just counted the steps / directions by hand, wrote them down, and very easily spotted the correct pattern. This took my less then 10 minutes, considerably faster then any smart solution I could code (the human brain **is** a quite powerful computer / patter detector, especially when we're only caring about one case...)
+For solving the actual puzzle, I was too lazy to implement anything. Instead I just counted the steps / directions by hand, wrote them down, and very easily spotted the correct pattern. This took my less then 10 minutes, considerably faster then any smart solution I could code (the human brain **is** a quite powerful computer / pattern detector, especially when we're only caring about one case...)
 
 **Time:** 28:24 / 56:41 (45min to get IO etc working, then 10 minutes to solve the maze by hand)
 
