@@ -35,12 +35,15 @@ $intcode->ascii_input_bulk(@inputs);
 
 my $clear = `clear`;
 my $prev=0;
+my $out='';
 while (!$intcode->waiting) {
     $intcode->runit;
     my $o = $intcode->output;
     if ($prev == 10 && $o == 10) {
-        select(undef,undef,undef,0.1);
+        print $out;
+        # select(undef,undef,undef,0.01);
         print $clear;
+        $out='';
     }
     elsif ($o > 128) {
         say "GOT DUST: $o";
@@ -51,8 +54,8 @@ while (!$intcode->waiting) {
         exit;
     }
     else {
-        print chr($o);
-        $prev=$o
+        $out.=chr($o);
+        $prev=$o;
     }
 }
 
