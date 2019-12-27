@@ -13,6 +13,7 @@ $seen{as_str(\@map)}=\@map;
 
 while (1) {
     my @new;
+    my $rating = 0;
     for my $r (0 .. 4) {
         for my $c (0 .. 4) {
             my $tile = $map[$r]->[$c];
@@ -33,22 +34,15 @@ while (1) {
             }
             # say "$r / $c: $nb -> $next";
             $new[$r]->[$c]=$next;
+            if ($next eq '#') {
+                $rating += 2 ** ($c + $r + $r * 4);
+            }
         }
     }
     @map = @new;
 
     if ($seen{as_str(\@map)}) {
         say as_str(\@map);
-        my $rating = 0;
-        my $power = 0;
-        for my $r (0 .. 4) {
-            for my $c (0 .. 4) {
-                if ($map[$r]->[$c] eq '#') {
-                    $rating += 2 ** $power;
-                }
-                $power++;
-            }
-        }
         say "biodiversity rating: $rating";
         exit;
     }
