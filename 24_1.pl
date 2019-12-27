@@ -9,8 +9,6 @@ while (my $l = <STDIN>) {
     push(@map,[ split(//,$l) ]);
 }
 
-$seen{as_str(\@map)}=\@map;
-
 while (1) {
     my @new;
     my $rating = 0;
@@ -40,19 +38,9 @@ while (1) {
         }
     }
     @map = @new;
-
-    if ($seen{as_str(\@map)}) {
-        say as_str(\@map);
+    if ($seen{$rating}++) {
         say "biodiversity rating: $rating";
         exit;
     }
-    else {
-        $seen{as_str(\@map)}=\@map;
-    }
-}
-
-sub as_str {
-    my $map = shift;
-    return join("\n", map { join('',@$_) } @$map);
 }
 
