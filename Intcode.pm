@@ -8,7 +8,7 @@ no warnings 'experimental::signatures';
 
 use base qw(Class::Accessor::Fast);
 
-__PACKAGE__->mk_accessors(qw(pos code modes output input halted waiting relbase show_ascii_output));
+__PACKAGE__->mk_accessors(qw(pos code modes output input halted waiting relbase show_ascii_output output_buffer));
 
 use constant DEBUG => 0;
 
@@ -22,6 +22,7 @@ sub new ($class, $code, $pos = 0) {
         waiting=>0,
         relbase=>0,
         show_ascii_output=>1,
+        output_buffer=>[],
     }, $class;
 }
 
@@ -75,7 +76,9 @@ sub op_3 ($self) { # input
 }
 
 sub op_4 ($self) { # output
-    $self->output($self->val);
+    my $val = $self->val;
+    $self->output($val);
+    push($self->{output_buffer}->@*, $val);
     return undef;
 }
 
@@ -140,6 +143,25 @@ sub read_pos ($self) {
     my $pos = $self->pos ;
     $self->pos($pos + 1);
     return $pos;
+}
+
+sub collect_output ($self) {
+    while ( !$self->waiting ) {
+        $self->runit;
+    }
+    return $self->flush_output;
+}
+
+sub flush_output ($self) {
+    my $output = $self->{output_buffer} || [];
+    $self->{output_buffer}=[];
+    return @$output;
+}
+
+sub input_and_run ($self, @in) {
+    $self->input( \@in );
+    $self->waiting(0);
+    $self->runit;
 }
 
 sub ascii_input ($self, $in) {
