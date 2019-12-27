@@ -293,8 +293,19 @@ Some simple array munging, which does not scale for part 2 :-(
 
 **Rank:** 2984 / -
 
+## Day 23 (done on 27th evening)
 
-## Day 24 (done on 27th)
+Some nice Intcode hacking, I added some more helpers to my Intcode (and needed to finally add buffered output..)
+
+Part 1 was rather easy and straight-forward: set up 50 Intcode machines, loop through each one, set some input, get the output and set the next inputs.
+
+Part 2 was basically the same, but I had a problem in my Intcode, where output values would be lost unless you very carefully collect return values. As this was too fragile, I finally added some buffered output helper methods.
+
+**Time**: 33:04 / 01:09:23
+
+**Rank:** 3463 / 3328
+
+## Day 24 (done on 27th morning)
 
 The first part was a rather easy Game Of Life, which I implemented using nested arrays.
 
