@@ -293,6 +293,17 @@ Some simple array munging, which does not scale for part 2 :-(
 
 **Rank:** 2984 / -
 
+
+## Day 24 (done on 27th)
+
+The first part was a rather easy Game Of Life, which I implemented using nested arrays.
+
+For the second part I converted my data structure to an hash using a string for level/row/col (`-3;1;3`) for the index. I solved the recursion by pushing new layer-tiles onto a queue (well, an array...), but somehow added a new layer each minute, resulting in a lot of empty layers. But as the runtime is 14s, I'm not very motivated to fix that bug. Oh, and I lost aprox 10 minutes because I still used the test data when submitting my result (and then tried to figure out what the bug could be..)
+
+**Time**: 33:44 / 1:56:39
+
+**Rank:** 3975 / 2896
+
 ## Day 25
 
 Hm, it was very easy to get some Intcode processor to manually explore the ship and figure out which items to collect where. Then it took me ages to correctly use Math::Combinatorics to get all the combinations of items to try. And in the end my Intcode just crashed after providing the hopefully correct solution (which I fixed now, see next para)
