@@ -181,8 +181,22 @@ sub ascii_input_bulk ($self, @inputs) {
 sub ascii_run ($self) {
     while (!$self->waiting) {
         $self->runit;
-        print chr($self->output) if $self->show_ascii_output;
+        my $ord = $self->output;
+        if ($ord > 255) {
+            say "GOT NON-ASCII VALUE: $ord";
+        }
+        else {
+            print chr($self->output) if $self->show_ascii_output;
+        }
         exit if $self->halted;
+    }
+}
+
+sub ascii_run_manual($self) {
+    while (1) {
+        my $in = <STDIN>;
+        chomp($in);
+        $self->ascii_input($in);
     }
 }
 
