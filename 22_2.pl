@@ -18,27 +18,25 @@ my $offset_diff   = Math::BigInt->new(0);
 for my $line (@instructions) {
     chomp($line);
     if ( $line eq 'deal into new stack' ) {
-        $offset_diff->badd($increment_mul->bneg);
+        $offset_diff += $increment_mul->bneg;
     }
     elsif ( $line =~ /cut (-?\d+)/ ) {
         my $cut = Math::BigInt->new($1);
-        $offset_diff->badd( $cut->bmul($increment_mul) );
+        $offset_diff += $cut * $increment_mul;
     }
     elsif ( $line =~ /deal with.* (\d+)/ ) {
         my $n = Math::BigInt->new("$1");
-        $increment_mul->bmul( $n->bmodpow( $size_2, $size ) );
+        $increment_mul *= $n->bmodpow( $size_2, $size );
     }
-    $increment_mul->bmod($size);
-    $offset_diff->bmod($size);
 }
 
 my $increment = $increment_mul->copy->bmodpow( $iterations, $size );
-my $foo       = Math::BigInt->new("1")->bsub($increment);
-my $bar       = Math::BigInt->new("1")->bsub($increment_mul)->bmod($size);
-my $baz       = $bar->bmodpow( $size_2, $size );
-my $offset    = $offset_diff->copy->bmul($foo)->bmul($baz);
+my $offset =
+    $offset_diff *
+    ( 1 - $increment ) *
+    ( ( 1 - $increment_mul ) % $size )->bmodpow( $size_2, $size );
 
-my $card = $pos->copy->bmul($increment)->badd($offset)->bmod($size);
+my $card = ( $pos * $increment + $offset ) % $size;
 
 say "Card at $pos after $iterations iterations: $card";
 
