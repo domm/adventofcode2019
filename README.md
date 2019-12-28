@@ -285,13 +285,15 @@ But maybe I should learn how to write a maze solver some time before next advent
 
 I might do some/all tasks later...
 
-## Day 22
+## Day 22 (part 2 done on the 28th)
 
 Some simple array munging, which does not scale for part 2 :-(
 
-**Time**: 32:06 / -
+I "solved" part 2 on the 28th; even after reading a lot of the reddit posts, I had no idea how to implement the math. So I took the Python code found [here](https://www.reddit.com/r/adventofcode/comments/ee0rqi/2019_day_22_solutions/fbpz92k) and reimplemented it in Perl, which is rather convoluted thanks to Math::BigInt (well, at least it works...). But after getting the correct result, I figured out how to replace most of the method calls like `bmul` and `bsub` with overloaded operators, making the final code much cleaner (and more similar to the Python solution).
 
-**Rank:** 2984 / -
+**Time**: 32:06 / 01:24:17
+
+**Rank:** 2984 / 2617
 
 ## Day 23 (done on 27th evening)
 
